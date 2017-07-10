@@ -9,6 +9,7 @@ import com.task.ahmedz.xtrava_todo.base.RefreshFragment;
 import com.task.ahmedz.xtrava_todo.callback.TodoInteractionListener;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -96,7 +97,6 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	@Override
 	public void showTodoList(List<TodoModel> todoList) {
 		todoRecyclerAdapter.setTodoItems(todoList);
-		setLoaded();
 	}
 
 	@Override
@@ -125,8 +125,12 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
-	public void updateTodo() {
-
+	public void refreshTodoState(TodoModel newModel) {
+		List<TodoModel> todoItems = todoRecyclerAdapter.getTodoItems();
+		todoItems.remove(newModel);
+		todoItems.add(newModel);
+		Collections.sort(todoItems);
+		todoRecyclerAdapter.setTodoItems(todoItems);
 	}
 
 	@Override

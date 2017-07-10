@@ -33,7 +33,7 @@ public interface TodoListContract {
 
 		void showEditTodoActivity();
 
-		void updateTodo();
+		void refreshTodoState(TodoModel newModel);
 
 		void showConnectionError();
 
@@ -45,8 +45,6 @@ public interface TodoListContract {
 		void loadTodoList();
 
 		void addTodoClicked();
-
-		void changeTodoCompletionStatus(@NonNull TodoModel todoModel);
 
 		void updateTodo(@NonNull TodoModel todoModel);
 

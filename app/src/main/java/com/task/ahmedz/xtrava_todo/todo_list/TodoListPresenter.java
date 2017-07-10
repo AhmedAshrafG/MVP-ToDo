@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.task.ahmedz.xtrava_todo.data.TodoListData;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
-import com.task.ahmedz.xtrava_todo.data.remote.ApiRequests;
 import com.task.ahmedz.xtrava_todo.data.repository.TodoListRepository;
+import com.task.ahmedz.xtrava_todo.util.Utils;
 
 import java.util.Collections;
 
@@ -53,6 +53,8 @@ class TodoListPresenter implements TodoListContract.Presenter {
 						.doOnSuccess(todoModels -> Collections.sort(todoModels))
 						.subscribeOn(Schedulers.newThread())
 						.observeOn(AndroidSchedulers.mainThread())
+						.doOnSubscribe(disposable -> mView.showLoadingView())
+						.doFinally(() -> mView.hideLoadingView())
 						.subscribe(
 								mView::showTodoList,
 								throwable -> {
@@ -74,42 +76,28 @@ class TodoListPresenter implements TodoListContract.Presenter {
 	}
 
 	@Override
-	public void onTodoStateChanged(TodoModel todoItem) {
-		mSubscriptions.add(
-				todoListRepository.updateTodo(todoItem)
-						.subscribeOn(Schedulers.newThread())
-						.observeOn(AndroidSchedulers.mainThread())
-						.subscribe(
-								todoModel -> mView.updateTodo(),
-								throwable -> {
-									throwable.printStackTrace();
-									mView.showUpdateError();
-								}
-						)
-		);
-	}
-
-	@Override
 	public void refreshTodoList() {
 		mSubscriptions.add(
 				todoListRepository.refreshTodoList()
 						.map(TodoListData::getTodoModels)
-						.doOnSuccess(todoModels -> Collections.sort(todoModels))
+						.doOnSuccess(Collections::sort)
 						.subscribeOn(Schedulers.newThread())
 						.observeOn(AndroidSchedulers.mainThread())
+						.doOnSubscribe(disposable -> mView.showLoadingView())
+						.doFinally(() -> mView.hideLoadingView())
 						.subscribe(
 								mView::showTodoList,
 								throwable -> {
 									throwable.printStackTrace();
 									mView.showConnectionError();
-									mView.hideLoadingView();
 								}
 						)
 		);
 	}
 
 	@Override
-	public void changeTodoCompletionStatus(@NonNull TodoModel todoModel) {
+	public void onTodoStateChanged(TodoModel todoItem) {
+		TodoModel todoModel = Utils.deepClone(todoItem);
 		todoModel.toggleCompleted();
 		updateTodo(todoModel);
 	}
@@ -117,10 +105,19 @@ class TodoListPresenter implements TodoListContract.Presenter {
 	@Override
 	public void updateTodo(@NonNull TodoModel todoModel) {
 		mSubscriptions.add(
-				ApiRequests.updateTodo(todoModel.getId(), todoModel)
+				todoListRepository.updateTodo(todoModel)
 						.subscribeOn(Schedulers.newThread())
 						.observeOn(AndroidSchedulers.mainThread())
-						.subscribe()
+						.doFinally(() -> mView.hideLoadingView())
+						.subscribe(
+								mView::refreshTodoState,
+								throwable -> {
+									throwable.printStackTrace();
+									mView.showUpdateError();
+									todoModel.toggleCompleted();
+									mView.refreshTodoState(todoModel);
+								}
+						)
 		);
 	}
 

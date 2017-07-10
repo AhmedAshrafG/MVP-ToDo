@@ -67,7 +67,12 @@ public class TodoModel implements Comparable<TodoModel> {
 			return false;
 
 		TodoModel that = (TodoModel) obj;
-		return this.getId() == that.getId();
+		return this.getId().equals(that.getId());
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 	@Override

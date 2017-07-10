@@ -19,7 +19,7 @@ import java.util.List;
 
 public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoViewHolder> {
 
-	private final ArrayList<TodoModel> todoItems;
+	private List<TodoModel> todoItems;
 	private TodoInteractionListener todoInteractionListener;
 
 	public TodoRecyclerAdapter(TodoInteractionListener todoInteractionListener) {
@@ -28,9 +28,12 @@ public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoViewHolder> {
 	}
 
 	public void setTodoItems(List<TodoModel> todoList) {
-		todoItems.clear();
-		todoItems.addAll(todoList);
+		this.todoItems = todoList;
 		notifyDataSetChanged();
+	}
+
+	public List<TodoModel> getTodoItems() {
+		return todoItems;
 	}
 
 	@Override

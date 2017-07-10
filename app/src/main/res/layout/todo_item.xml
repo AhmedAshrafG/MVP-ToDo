@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/completed_checkbox"
             android:button="@drawable/checkbox_selector"
-            android:enabled="false"
             />
         <TextView
             android:layout_width="0dp"

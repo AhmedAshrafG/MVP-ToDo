@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
 
@@ -22,6 +23,9 @@ public interface TodoDao {
 
 	@Query("SELECT * FROM todo WHERE id = :todoId")
 	Flowable<TodoModel> findById(String todoId);
+
+	@Update
+	void update(TodoModel todoModel);
 
 	@Insert
 	void insertAll(TodoModel...todoModels);

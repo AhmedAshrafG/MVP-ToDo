@@ -53,11 +53,6 @@ public class TodoListRepository implements TodoListDataSource {
 	}
 
 	@Override
-	public Single<TodoModel> updateTodo(@NonNull TodoModel todoModel) {
-		return null;
-	}
-
-	@Override
 	public Single<TodoModel> addTodo(@NonNull TodoModel todoModel) {
 		return null;
 	}
@@ -70,5 +65,11 @@ public class TodoListRepository implements TodoListDataSource {
 	@Override
 	public Single<TodoListData> refreshTodoList() {
 		return ApiRequests.getTodoList();
+	}
+
+	@Override
+	public Single<TodoModel> updateTodo(TodoModel todoModel) {
+		return ApiRequests.updateTodo(todoModel.getId(), todoModel)
+				.doOnSuccess(todoDao::update);
 	}
 }

@@ -39,6 +39,8 @@ public class TodoViewHolder extends RecyclerView.ViewHolder {
 				todoInteractionListener.onTodoStateChanged(todoItem);
 		});
 
+//		completedCheckbox.setOnCheckedChangeListener((compoundButton, b) -> completedCheckbox.setChecked(todoItem.isCompleted()));
+
 		itemView.setOnClickListener(view -> {
 			if (todoInteractionListener != null)
 				todoInteractionListener.onItemClicked(todoItem);
