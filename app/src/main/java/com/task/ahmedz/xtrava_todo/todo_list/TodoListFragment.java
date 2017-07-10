@@ -1,18 +1,22 @@
 package com.task.ahmedz.xtrava_todo.todo_list;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.task.ahmedz.xtrava_todo.R;
 import com.task.ahmedz.xtrava_todo.adapter.TodoRecyclerAdapter;
+import com.task.ahmedz.xtrava_todo.add_todo.AddTodoActivity;
 import com.task.ahmedz.xtrava_todo.base.RefreshFragment;
 import com.task.ahmedz.xtrava_todo.callback.TodoInteractionListener;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
+import com.task.ahmedz.xtrava_todo.util.RxNavigator;
 
 import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.Observable;
 
 /**
@@ -36,6 +40,7 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	protected void onLayoutInflated() {
 		super.onLayoutInflated();
 		setupTodoRecycler();
+		mPresenter.subscribe();
 	}
 
 	private void setupTodoRecycler() {
@@ -43,6 +48,11 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 		todoRecyclerAdapter = new TodoRecyclerAdapter(this);
 		todoRecyclerView.setLayoutManager(mLinearLayoutManager);
 		todoRecyclerView.setAdapter(todoRecyclerAdapter);
+	}
+
+	@OnClick(R.id.fab)
+	void onFabClicked() {
+		mPresenter.addTodoClicked();
 	}
 
 	@Override
@@ -65,12 +75,16 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	@Override
 	public void onResume() {
 		super.onResume();
-		mPresenter.subscribe();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
 		mPresenter.unsubscribe();
 	}
 
@@ -101,7 +115,15 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 
 	@Override
 	public Observable<AddTodoResult> showAddTodoActivity() {
-		return null;
+		Intent intent = new Intent(getActivity(), AddTodoActivity.class);
+		return RxNavigator
+				.navigateAndWait(this, intent)
+				.map(result -> {
+					Intent data = result.data();
+					String todoTitle = data.getStringExtra(getString(R.string.todo_title));
+					int todoOrder = data.getIntExtra(getString(R.string.todo_order), 1);
+					return new AddTodoResult(todoTitle, todoOrder);
+				});
 	}
 
 	@Override
@@ -125,10 +147,10 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
-	public void refreshTodoState(TodoModel newModel) {
+	public void refreshTodoState(TodoModel todoModel) {
 		List<TodoModel> todoItems = todoRecyclerAdapter.getTodoItems();
-		todoItems.remove(newModel);
-		todoItems.add(newModel);
+		todoItems.remove(todoModel);
+		todoItems.add(todoModel);
 		Collections.sort(todoItems);
 		todoRecyclerAdapter.setTodoItems(todoItems);
 	}
@@ -141,5 +163,18 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	@Override
 	public void showUpdateError() {
 		showSnackBar(R.string.update_error);
+	}
+
+	@Override
+	public void addTodoModel(TodoModel todoModel) {
+		List<TodoModel> todoItems = todoRecyclerAdapter.getTodoItems();
+		todoItems.add(todoModel);
+		Collections.sort(todoItems);
+		todoRecyclerAdapter.setTodoItems(todoItems);
+	}
+
+	@Override
+	public void showAddTodoError() {
+		showSnackBar(R.string.error_message);
 	}
 }

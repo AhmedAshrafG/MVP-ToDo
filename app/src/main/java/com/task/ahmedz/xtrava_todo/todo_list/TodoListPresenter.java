@@ -20,15 +20,17 @@ import io.reactivex.schedulers.Schedulers;
 class TodoListPresenter implements TodoListContract.Presenter {
 
 	private final TodoListContract.View mView;
-	private final TodoListRepository todoListRepository;
+	private final TodoListRepository mRepository;
 	private final CompositeDisposable mSubscriptions;
 
-	public TodoListPresenter(TodoListRepository todoListRepository, TodoListContract.View mView) {
+	public TodoListPresenter(TodoListRepository mRepository, TodoListContract.View mView) {
 		if (mView == null)
 			throw new IllegalArgumentException("View can't be null!");
+
 		this.mView = mView;
-		this.todoListRepository = todoListRepository;
+		this.mRepository = mRepository;
 		this.mSubscriptions = new CompositeDisposable();
+
 		mView.setPresenter(this);
 	}
 
@@ -45,7 +47,7 @@ class TodoListPresenter implements TodoListContract.Presenter {
 	@Override
 	public void loadTodoList() {
 		mSubscriptions.add(
-				todoListRepository.getTodoList()
+				mRepository.getTodoList()
 						.doOnSuccess(todoListData -> {
 							if (!todoListData.isRemote()) mView.showConnectionError();
 						})
@@ -66,24 +68,13 @@ class TodoListPresenter implements TodoListContract.Presenter {
 	}
 
 	@Override
-	public void addTodoClicked() {
-		mView.showAddTodoActivity();
-	}
-
-	@Override
-	public void onTodoClicked(TodoModel todoItem) {
-		mView.showEditTodoActivity();
-	}
-
-	@Override
 	public void refreshTodoList() {
 		mSubscriptions.add(
-				todoListRepository.refreshTodoList()
+				mRepository.refreshTodoList()
 						.map(TodoListData::getTodoModels)
 						.doOnSuccess(Collections::sort)
 						.subscribeOn(Schedulers.newThread())
 						.observeOn(AndroidSchedulers.mainThread())
-						.doOnSubscribe(disposable -> mView.showLoadingView())
 						.doFinally(() -> mView.hideLoadingView())
 						.subscribe(
 								mView::showTodoList,
@@ -96,6 +87,33 @@ class TodoListPresenter implements TodoListContract.Presenter {
 	}
 
 	@Override
+	public void addTodoClicked() {
+		mView.showAddTodoActivity()
+				.flatMapSingle(addTodoResult -> {
+					String title = addTodoResult.getTitle();
+					int order = addTodoResult.getOrder();
+
+					return mRepository.addTodo(new TodoModel(title, order))
+							.subscribeOn(Schedulers.newThread())
+							.observeOn(AndroidSchedulers.mainThread());
+				})
+				.doOnSubscribe(disposable -> mView.showLoadingView())
+				.doFinally(() -> mView.hideLoadingView())
+				.subscribe(
+						mView::addTodoModel,
+						throwable -> {
+							throwable.printStackTrace();
+							mView.showAddTodoError();
+						}
+				);
+	}
+
+	@Override
+	public void onTodoClicked(TodoModel todoItem) {
+		mView.showEditTodoActivity();
+	}
+
+	@Override
 	public void onTodoStateChanged(TodoModel todoItem) {
 		TodoModel todoModel = Utils.deepClone(todoItem);
 		todoModel.toggleCompleted();
@@ -105,7 +123,7 @@ class TodoListPresenter implements TodoListContract.Presenter {
 	@Override
 	public void updateTodo(@NonNull TodoModel todoModel) {
 		mSubscriptions.add(
-				todoListRepository.updateTodo(todoModel)
+				mRepository.updateTodo(todoModel)
 						.subscribeOn(Schedulers.newThread())
 						.observeOn(AndroidSchedulers.mainThread())
 						.doFinally(() -> mView.hideLoadingView())

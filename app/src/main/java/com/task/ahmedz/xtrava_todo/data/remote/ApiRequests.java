@@ -29,7 +29,15 @@ public class ApiRequests {
 	public static Single<TodoModel> updateTodo(String todoId, TodoModel todoModel) {
 		return ApiClient.getClient()
 				.create(ApiInterface.class)
-				.updateTodo(todoId, getRequestBody(todoModel));
+				.updateTodo(todoId, getRequestBody(todoModel))
+				.timeout(TIMEOUT, TimeUnit.SECONDS);
+	}
+
+	public static Single<TodoModel> addTodo(TodoModel todoModel) {
+		return ApiClient.getClient()
+				.create(ApiInterface.class)
+				.addTodo(getRequestBody(todoModel))
+				.timeout(TIMEOUT, TimeUnit.SECONDS);
 	}
 
 	private static RequestBody getRequestBody(Object obj) {

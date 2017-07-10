@@ -15,6 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -49,15 +50,17 @@ dependencies {
     // Data Persistence
     compile "android.arch.persistence.room:runtime:$room_version"
     compile "android.arch.persistence.room:rxjava2:$room_version"
-    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
 
 
     // Utils
     compile 'com.jakewharton:butterknife:8.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.google.code.gson:gson:2.8.1'
     compile group: 'uk.com.robust-it', name: 'cloning', version: '1.9.5'
+
+    // Annotations
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
 
     testCompile 'junit:junit:4.12'
 }

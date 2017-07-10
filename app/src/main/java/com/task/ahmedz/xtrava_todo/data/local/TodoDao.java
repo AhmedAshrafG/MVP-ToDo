@@ -28,6 +28,9 @@ public interface TodoDao {
 	void update(TodoModel todoModel);
 
 	@Insert
+	void insert(TodoModel todoModel);
+
+	@Insert
 	void insertAll(TodoModel...todoModels);
 
 	@Delete

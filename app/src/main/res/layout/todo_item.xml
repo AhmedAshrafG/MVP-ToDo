@@ -37,7 +37,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/order_text_view"
             tools:text="1"
-            android:paddingEnd="@dimen/inner_small"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/outer_space"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_delete"
             />
     </LinearLayout>
 </android.support.v7.widget.CardView>

@@ -17,6 +17,11 @@ public class TodoModel implements Comparable<TodoModel> {
 	private int order;
 	private String url;
 
+	public TodoModel(String title, int order) {
+		this.title = title;
+		this.order = order;
+	}
+
 	public boolean isCompleted() {
 		return completed;
 	}

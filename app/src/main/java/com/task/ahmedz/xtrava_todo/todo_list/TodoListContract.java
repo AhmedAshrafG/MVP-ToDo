@@ -38,6 +38,10 @@ public interface TodoListContract {
 		void showConnectionError();
 
 		void showUpdateError();
+
+		void addTodoModel(TodoModel todoModel);
+
+		void showAddTodoError();
 	}
 
 	interface Presenter extends BasePresenter {
