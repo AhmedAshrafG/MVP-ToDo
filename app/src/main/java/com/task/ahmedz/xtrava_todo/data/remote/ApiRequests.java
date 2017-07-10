@@ -6,6 +6,8 @@ import com.task.ahmedz.xtrava_todo.data.TodoModel;
 import java.util.List;
 
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -18,7 +20,9 @@ public class ApiRequests {
 	public static Single<List<TodoModel>> getTodoList() {
 		return ApiClient.getClient()
 				.create(ApiInterface.class)
-				.getTodoList();
+				.getTodoList()
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread());
 	}
 
 	private static RequestBody getRequestBody(Object obj) {

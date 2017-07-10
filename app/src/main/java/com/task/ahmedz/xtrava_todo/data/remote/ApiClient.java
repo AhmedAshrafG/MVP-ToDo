@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-	public static final String BASE_URL = "https://todo-backend-modern-js.herokuapp.com/todos";
+	public static final String BASE_URL = "https://todo-backend-modern-js.herokuapp.com/todos/";
 	private static Retrofit retrofit = null;
 
 

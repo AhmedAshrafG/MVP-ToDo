@@ -19,10 +19,10 @@ import retrofit2.http.Path;
  */
 
 public interface ApiInterface {
-	@GET
+	@GET(".")
 	Single<List<TodoModel>> getTodoList();
 
-	@POST
+	@POST(".")
 	Single<TodoModel> addTodo(@Body RequestBody requestBody);
 
 	@PATCH("{todoId}")
