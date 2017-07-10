@@ -47,7 +47,7 @@ class TodoListPresenter implements TodoListContract.Presenter {
 						mView::showTodoList,
 						throwable -> {
 							throwable.printStackTrace();
-//							mView.showLoadingTodoListError();
+							mView.showLoadingTodoListError();
 						}
 				)
 		);

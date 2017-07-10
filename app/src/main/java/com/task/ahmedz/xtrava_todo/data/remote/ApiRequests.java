@@ -24,18 +24,18 @@ public class ApiRequests {
 		return ApiClient.getClient()
 				.create(ApiInterface.class)
 				.getTodoList()
+				.timeout(TIMEOUT, TimeUnit.SECONDS)
 				.subscribeOn(Schedulers.newThread())
-				.observeOn(AndroidSchedulers.mainThread())
-				.timeout(TIMEOUT, TimeUnit.SECONDS);
+				.observeOn(AndroidSchedulers.mainThread());
 	}
 
 	public static Single<TodoModel> updateTodo(String todoId, TodoModel todoModel) {
 		return ApiClient.getClient()
 				.create(ApiInterface.class)
 				.updateTodo(todoId, getRequestBody(todoModel))
+				.timeout(TIMEOUT, TimeUnit.SECONDS)
 				.subscribeOn(Schedulers.newThread())
-				.observeOn(AndroidSchedulers.mainThread())
-				.timeout(TIMEOUT, TimeUnit.SECONDS);
+				.observeOn(AndroidSchedulers.mainThread());
 	}
 
 	private static RequestBody getRequestBody(Object obj) {
