@@ -27,7 +27,12 @@ public abstract class RefreshFragment extends BaseFragment {
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return setContentView(inflater, container, getLayoutResId());
+		View view = setContentView(inflater, container, getLayoutResId());
+		onLayoutInflated();
+		return view;
+	}
+
+	protected void onLayoutInflated() {
 	}
 
 	protected abstract int getLayoutResId();

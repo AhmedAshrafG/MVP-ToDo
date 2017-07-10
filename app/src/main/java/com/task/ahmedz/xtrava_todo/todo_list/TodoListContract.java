@@ -8,6 +8,8 @@ import com.task.ahmedz.xtrava_todo.data.TodoModel;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+
 /**
  * Created by ahmed on 09-Jul-17.
  */
@@ -15,29 +17,37 @@ import java.util.List;
 public interface TodoListContract {
 	interface View extends BaseView<Presenter> {
 
-		void setLoading();
+		void showLoadingView();
 
-		void setLoaded();
+		void hideLoadingView();
 
 		void showTodoList(List<TodoModel> todoList);
 
-		void addTodoClicked();
+		Observable<AddTodoResult> showAddTodoActivity();
 
 		void showTodoMarkedComplete();
 
 		void showLoadingTodoListError();
 
 		void showSuccessfullySavedMessage();
+
+		void showEditTodoActivity();
 	}
 
 	interface Presenter extends BasePresenter {
 
 		void loadTodoList();
 
-		void addNewTodo();
+		void addTodoClicked();
 
-		void completeTodo(@NonNull TodoModel completedTodo);
+		void changeTodoCompletionStatus(@NonNull TodoModel todoModel);
 
-		void updateTodo(@NonNull TodoModel updatedTodo, String title);
+		void updateTodo(@NonNull TodoModel todoModel);
+
+		void deleteTodo(@NonNull TodoModel todoModel);
+
+		void onTodoClicked(TodoModel todoItem);
+
+		void onTodoStateChanged(TodoModel todoItem);
 	}
 }

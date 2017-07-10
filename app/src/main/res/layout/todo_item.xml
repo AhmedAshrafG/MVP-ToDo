@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/inner_space"
+    android:layout_marginRight="@dimen/inner_space"
+    android:layout_marginLeft="@dimen/inner_space"
+    app:cardElevation="@dimen/default_elevation"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/outer_space"
+        android:gravity="center"
+        >
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/completed_checkbox"
+            android:button="@drawable/checkbox_selector"
+            android:enabled="false"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/title_text_view"
+            tools:text="Finish your Android tasks"
+            android:lines="1"
+            android:paddingLeft="@dimen/inner_small"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/order_text_view"
+            tools:text="1"
+            android:paddingEnd="@dimen/inner_small"
+            />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

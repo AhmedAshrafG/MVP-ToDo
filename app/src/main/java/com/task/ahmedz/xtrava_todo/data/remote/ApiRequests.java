@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,12 +18,24 @@ import okhttp3.RequestBody;
 
 public class ApiRequests {
 
+	private static final long TIMEOUT = 5;
+
 	public static Single<List<TodoModel>> getTodoList() {
 		return ApiClient.getClient()
 				.create(ApiInterface.class)
 				.getTodoList()
 				.subscribeOn(Schedulers.newThread())
-				.observeOn(AndroidSchedulers.mainThread());
+				.observeOn(AndroidSchedulers.mainThread())
+				.timeout(TIMEOUT, TimeUnit.SECONDS);
+	}
+
+	public static Single<TodoModel> updateTodo(String todoId, TodoModel todoModel) {
+		return ApiClient.getClient()
+				.create(ApiInterface.class)
+				.updateTodo(todoId, getRequestBody(todoModel))
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread())
+				.timeout(TIMEOUT, TimeUnit.SECONDS);
 	}
 
 	private static RequestBody getRequestBody(Object obj) {

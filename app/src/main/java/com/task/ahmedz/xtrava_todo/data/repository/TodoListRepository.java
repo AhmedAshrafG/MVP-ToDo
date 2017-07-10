@@ -29,7 +29,10 @@ public class TodoListRepository implements TodoListDataSource {
 
 	@Override
 	public Single<List<TodoModel>> getTodoList() {
-		return ApiRequests.getTodoList();
+		return ApiRequests.getTodoList()
+				.onErrorResumeNext(throwable -> {
+					return ApiRequests.getTodoList();
+				});
 	}
 
 	@Override
