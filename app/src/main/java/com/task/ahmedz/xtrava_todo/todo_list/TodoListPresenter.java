@@ -5,10 +5,12 @@ import android.support.annotation.NonNull;
 import com.task.ahmedz.xtrava_todo.data.TodoListData;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
 import com.task.ahmedz.xtrava_todo.data.repository.TodoListRepository;
+import com.task.ahmedz.xtrava_todo.util.DeleteRequestResponseParser;
 import com.task.ahmedz.xtrava_todo.util.Utils;
 
 import java.util.Collections;
 
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -121,6 +123,11 @@ class TodoListPresenter implements TodoListContract.Presenter {
 	}
 
 	@Override
+	public void onTodoDeleteClicked(TodoModel todoModel) {
+		deleteTodo(todoModel);
+	}
+
+	@Override
 	public void updateTodo(@NonNull TodoModel todoModel) {
 		mSubscriptions.add(
 				mRepository.updateTodo(todoModel)
@@ -141,6 +148,27 @@ class TodoListPresenter implements TodoListContract.Presenter {
 
 	@Override
 	public void deleteTodo(@NonNull TodoModel todoModel) {
-
+		mSubscriptions.add(
+				mRepository.deleteTodo(todoModel.getId())
+						.map(responseBody -> new DeleteRequestResponseParser(responseBody))
+						.flatMapCompletable(responseParser -> {
+							if (responseParser.isSuccess())
+								return Completable.complete();
+							else
+								return Completable.error(new Exception());
+						})
+						.subscribeOn(Schedulers.newThread())
+						.observeOn(AndroidSchedulers.mainThread())
+						.doFinally(() -> mView.hideLoadingView())
+						.subscribe(
+								() -> mView.removeTodo(todoModel),
+								throwable -> {
+									throwable.printStackTrace();
+									mView.showDeleteError();
+									todoModel.toggleCompleted();
+									mView.refreshTodoState(todoModel);
+								}
+						)
+		);
 	}
 }

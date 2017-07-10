@@ -33,13 +33,17 @@ public interface TodoListContract {
 
 		void showEditTodoActivity();
 
+		void addTodoModel(TodoModel todoModel);
+
 		void refreshTodoState(TodoModel newModel);
+
+		void removeTodo(TodoModel todoModel);
 
 		void showConnectionError();
 
 		void showUpdateError();
 
-		void addTodoModel(TodoModel todoModel);
+		void showDeleteError();
 
 		void showAddTodoError();
 	}
@@ -57,6 +61,8 @@ public interface TodoListContract {
 		void onTodoClicked(TodoModel todoItem);
 
 		void onTodoStateChanged(TodoModel todoItem);
+
+		void onTodoDeleteClicked(TodoModel todoItem);
 
 		void refreshTodoList();
 	}

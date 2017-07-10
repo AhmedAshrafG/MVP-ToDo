@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Single;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 /**
  * Created by ahmed on 10-Jul-17.
@@ -37,6 +38,13 @@ public class ApiRequests {
 		return ApiClient.getClient()
 				.create(ApiInterface.class)
 				.addTodo(getRequestBody(todoModel))
+				.timeout(TIMEOUT, TimeUnit.SECONDS);
+	}
+
+	public static Single<ResponseBody> deleteTodo(String todoId) {
+		return ApiClient.getClient()
+				.create(ApiInterface.class)
+				.deleteTodo(todoId)
 				.timeout(TIMEOUT, TimeUnit.SECONDS);
 	}
 

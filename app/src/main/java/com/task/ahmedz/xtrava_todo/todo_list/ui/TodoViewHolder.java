@@ -23,6 +23,8 @@ public class TodoViewHolder extends RecyclerView.ViewHolder {
 	TextView titleTextView;
 	@BindView(R.id.order_text_view)
 	TextView orderTextView;
+	@BindView(R.id.delete_view)
+	View deleteView;
 
 	public TodoViewHolder(View view) {
 		super(view);
@@ -33,6 +35,11 @@ public class TodoViewHolder extends RecyclerView.ViewHolder {
 		completedCheckbox.setChecked(todoItem.isCompleted());
 		titleTextView.setText(todoItem.getTitle());
 		orderTextView.setText(String.valueOf(todoItem.getOrder()));
+
+		deleteView.setOnClickListener(view -> {
+			if (todoInteractionListener != null)
+				todoInteractionListener.onDeleteItemClicked(todoItem);
+		});
 
 		completedCheckbox.setOnClickListener(view -> {
 			if (todoInteractionListener != null)

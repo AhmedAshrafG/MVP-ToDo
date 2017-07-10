@@ -7,8 +7,8 @@
     <string name="error_message">An error occured!</string>
     <string name="todo_title">Title</string>
     <string name="todo_order">Order</string>
-    <string name="connection_error">Connect to the internet for a better experience</string>
-    <string name="update_error">Couldn\'t connect to the internet</string>
+    <string name="offline_mode_error">Connect to the internet for a better experience</string>
+    <string name="connection_error">Couldn\'t connect to the internet</string>
     <string name="title_activity_add_todo">Add Todo</string>
     <string name="input_missing_error">Required!</string>
 </resources>

@@ -11,8 +11,8 @@ import com.task.ahmedz.xtrava_todo.data.source.TodoListDataSource;
 
 import java.util.ArrayList;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
+import okhttp3.ResponseBody;
 
 /**
  * Created by ahmed on 10-Jul-17.
@@ -60,8 +60,8 @@ public class TodoListRepository implements TodoListDataSource {
 	}
 
 	@Override
-	public Completable deleteTodo(@NonNull String todoId) {
-		return null;
+	public Single<ResponseBody> deleteTodo(@NonNull String todoId) {
+		return ApiRequests.deleteTodo(todoId);
 	}
 
 	@Override

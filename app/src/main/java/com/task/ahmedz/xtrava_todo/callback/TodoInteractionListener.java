@@ -12,4 +12,5 @@ public interface TodoInteractionListener {
 
 	void onTodoStateChanged(TodoModel todoItem);
 
+	void onDeleteItemClicked(TodoModel todoItem);
 }

@@ -61,8 +61,13 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
-	public void onTodoStateChanged(TodoModel todoModel) {
-		mPresenter.onTodoStateChanged(todoModel);
+	public void onTodoStateChanged(TodoModel todoItem) {
+		mPresenter.onTodoStateChanged(todoItem);
+	}
+
+	@Override
+	public void onDeleteItemClicked(TodoModel todoItem) {
+		mPresenter.onTodoDeleteClicked(todoItem);
 	}
 
 	@Override
@@ -70,22 +75,6 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 		if (mPresenter == null)
 			throw new IllegalArgumentException("Presenter can't be null!");
 		this.mPresenter = mPresenter;
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		mPresenter.unsubscribe();
 	}
 
 	@Override
@@ -156,13 +145,26 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
+	public void removeTodo(TodoModel todoModel) {
+		List<TodoModel> todoItems = todoRecyclerAdapter.getTodoItems();
+		todoItems.remove(todoModel);
+		Collections.sort(todoItems);
+		todoRecyclerAdapter.setTodoItems(todoItems);
+	}
+
+	@Override
 	public void showConnectionError() {
-		showSnackBar(R.string.connection_error);
+		showSnackBar(R.string.offline_mode_error);
 	}
 
 	@Override
 	public void showUpdateError() {
-		showSnackBar(R.string.update_error);
+		showSnackBar(R.string.connection_error);
+	}
+
+	@Override
+	public void showDeleteError() {
+		showSnackBar(R.string.connection_error);
 	}
 
 	@Override
@@ -176,5 +178,11 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	@Override
 	public void showAddTodoError() {
 		showSnackBar(R.string.error_message);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mPresenter.unsubscribe();
 	}
 }
