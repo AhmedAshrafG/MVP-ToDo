@@ -53,7 +53,7 @@ public abstract class RefreshFragment extends BaseFragment {
 		refreshLayout.setOnRefreshListener(() -> onRefresh());
 	}
 	protected void setLoading() {
-		contentView.setVisibility(View.GONE);
+//		contentView.setVisibility(View.GONE);
 		refreshLayout.setRefreshing(true);
 	}
 	protected void setLoaded() {
