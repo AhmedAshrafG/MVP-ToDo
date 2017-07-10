@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 ext.support_version = "25.3.1"
+ext.retrofit_version = "2.3.0"
 
 android {
     compileSdkVersion 25
@@ -37,18 +38,18 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
+    // Network
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
     // Utils
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
+    compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
 
     testCompile 'junit:junit:4.12'
-}
-
-retrolambda {
-    javaVersion JavaVersion.VERSION_1_7
-    jvmArgs '-noverify'
-    defaultMethods false
-    incremental true
 }
 
 android {

@@ -6,22 +6,21 @@ import com.task.ahmedz.xtrava_todo.data.TodoModel;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 
 /**
  * Created by ahmed on 10-Jul-17.
  */
 
 public interface TodoListDataSource {
-	Observable<List<TodoModel>> getTodoList();
+	Single<List<TodoModel>> getTodoList();
 
-	void saveTodo(@NonNull TodoModel task);
+	Single<TodoModel> updateTodo(@NonNull TodoModel todoModel);
 
-	void completeTodo(@NonNull TodoModel task);
+	Single<TodoModel> addTodo(@NonNull TodoModel todoModel);
 
-	void completeTodo(@NonNull String taskId);
+	Completable deleteTodo(@NonNull String todoId);
 
-	void refreshTodos();
-
-	void deleteTodo(@NonNull String taskId);
+	void refreshTodoList();
 }

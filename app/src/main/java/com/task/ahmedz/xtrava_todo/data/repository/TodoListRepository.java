@@ -3,11 +3,13 @@ package com.task.ahmedz.xtrava_todo.data.repository;
 import android.support.annotation.NonNull;
 
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
+import com.task.ahmedz.xtrava_todo.data.remote.ApiRequests;
 import com.task.ahmedz.xtrava_todo.data.source.TodoListDataSource;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 
 /**
  * Created by ahmed on 10-Jul-17.
@@ -24,33 +26,29 @@ public class TodoListRepository implements TodoListDataSource {
 		return instance;
 	}
 
+
 	@Override
-	public Observable<List<TodoModel>> getTodoList() {
+	public Single<List<TodoModel>> getTodoList() {
+		return ApiRequests.getTodoList();
+	}
+
+	@Override
+	public Single<TodoModel> updateTodo(@NonNull TodoModel todoModel) {
 		return null;
 	}
 
 	@Override
-	public void saveTodo(@NonNull TodoModel task) {
-
+	public Single<TodoModel> addTodo(@NonNull TodoModel todoModel) {
+		return null;
 	}
 
 	@Override
-	public void completeTodo(@NonNull TodoModel task) {
-
+	public Completable deleteTodo(@NonNull String todoId) {
+		return null;
 	}
 
 	@Override
-	public void completeTodo(@NonNull String taskId) {
-
-	}
-
-	@Override
-	public void refreshTodos() {
-
-	}
-
-	@Override
-	public void deleteTodo(@NonNull String taskId) {
+	public void refreshTodoList() {
 
 	}
 }
