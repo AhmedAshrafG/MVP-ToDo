@@ -1,4 +1,4 @@
-package com.task.ahmedz.xtrava_todo.add_todo;
+package com.task.ahmedz.xtrava_todo.edit_todo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,21 +7,28 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.EditText;
 
-import com.task.ahmedz.xtrava_todo.BuildConfig;
 import com.task.ahmedz.xtrava_todo.R;
+import com.task.ahmedz.xtrava_todo.data.TodoModel;
+import com.task.ahmedz.xtrava_todo.edit_todo.repository.EditTodoRepository;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public class AddTodoActivity extends AppCompatActivity {
+/**
+ * Created by ahmed on 10-Jul-17.
+ */
 
+public class EditTodoActivity extends AppCompatActivity {
 	@BindView(R.id.toolbar)
 	Toolbar toolbar;
 	@BindView(R.id.title_text_view)
 	EditText titleTextView;
 	@BindView(R.id.order_text_view)
 	EditText orderTextView;
+	private EditTodoRepository mRepository;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +38,21 @@ public class AddTodoActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		if (BuildConfig.DEBUG) {
-			titleTextView.setText("LOL");
-			orderTextView.setText("2");
-			onFabClicked();
-		}
+		prepareData();
+	}
+
+	private void prepareData() {
+		String todoId = getIntent().getStringExtra(getString(R.string.todo_id));
+		mRepository = EditTodoRepository.getInstance(todoId);
+		mRepository.loadTodoItem()
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(this::bindUI, Throwable::printStackTrace);
+	}
+
+	private void bindUI(TodoModel todoModel) {
+		orderTextView.setText(String.valueOf(todoModel.getOrder()));
+		titleTextView.setText(todoModel.getTitle());
 	}
 
 	@OnClick(R.id.fab)

@@ -102,7 +102,10 @@ class TodoListPresenter implements TodoListContract.Presenter {
 				.doOnSubscribe(disposable -> mView.showLoadingView())
 				.doFinally(() -> mView.hideLoadingView())
 				.subscribe(
-						mView::addTodoModel,
+						(todoModel) -> {
+							mView.addTodoModel(todoModel);
+							mView.showSuccessfullySavedMessage();
+						},
 						throwable -> {
 							throwable.printStackTrace();
 							mView.showAddTodoError();
@@ -112,7 +115,31 @@ class TodoListPresenter implements TodoListContract.Presenter {
 
 	@Override
 	public void onTodoClicked(TodoModel todoItem) {
-		mView.showEditTodoActivity();
+		mView.showEditTodoActivity(todoItem.getId())
+				.flatMapSingle(editTodoResult -> {
+					String title = editTodoResult.getTitle();
+					int order = editTodoResult.getOrder();
+
+					TodoModel clone = Utils.deepClone(todoItem);
+					clone.setTitle(title);
+					clone.setOrder(order);
+
+					return mRepository.updateTodo(clone)
+							.subscribeOn(Schedulers.newThread())
+							.observeOn(AndroidSchedulers.mainThread());
+				})
+				.doOnSubscribe(disposable -> mView.showLoadingView())
+				.doFinally(() -> mView.hideLoadingView())
+				.subscribe(
+						(todoModel) -> {
+							mView.refreshTodoState(todoModel);
+							mView.showSuccessfullySavedMessage();
+						},
+						throwable -> {
+							throwable.printStackTrace();
+							mView.showAddTodoError();
+						}
+				);
 	}
 
 	@Override

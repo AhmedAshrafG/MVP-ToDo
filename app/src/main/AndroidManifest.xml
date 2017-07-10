@@ -34,6 +34,17 @@
                 android:value="com.task.ahmedz.xtrava_todo.todo_list.TodoListActivity"
                 />
         </activity>
+        <activity
+            android:name=".edit_todo.EditTodoActivity"
+            android:label="@string/title_activity_edit_todo"
+            android:parentActivityName=".todo_list.TodoListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.task.ahmedz.xtrava_todo.todo_list.TodoListActivity"
+                />
+        </activity>
     </application>
 
 </manifest>

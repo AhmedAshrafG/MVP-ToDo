@@ -10,6 +10,7 @@ import com.task.ahmedz.xtrava_todo.add_todo.AddTodoActivity;
 import com.task.ahmedz.xtrava_todo.base.RefreshFragment;
 import com.task.ahmedz.xtrava_todo.callback.TodoInteractionListener;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
+import com.task.ahmedz.xtrava_todo.edit_todo.EditTodoActivity;
 import com.task.ahmedz.xtrava_todo.util.RxNavigator;
 
 import java.util.Collections;
@@ -103,7 +104,7 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
-	public Observable<AddTodoResult> showAddTodoActivity() {
+	public Observable<TodoActivityResult> showAddTodoActivity() {
 		Intent intent = new Intent(getActivity(), AddTodoActivity.class);
 		return RxNavigator
 				.navigateAndWait(this, intent)
@@ -111,13 +112,8 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 					Intent data = result.data();
 					String todoTitle = data.getStringExtra(getString(R.string.todo_title));
 					int todoOrder = data.getIntExtra(getString(R.string.todo_order), 1);
-					return new AddTodoResult(todoTitle, todoOrder);
+					return new TodoActivityResult(todoTitle, todoOrder);
 				});
-	}
-
-	@Override
-	public void showTodoMarkedComplete() {
-
 	}
 
 	@Override
@@ -127,12 +123,22 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 
 	@Override
 	public void showSuccessfullySavedMessage() {
-
+		showSnackBar(R.string.success_message);
 	}
 
 	@Override
-	public void showEditTodoActivity() {
+	public Observable<TodoActivityResult> showEditTodoActivity(String todoId) {
+		Intent intent = new Intent(getActivity(), EditTodoActivity.class);
+		intent.putExtra(getString(R.string.todo_id), todoId);
 
+		return RxNavigator
+				.navigateAndWait(this, intent)
+				.map(result -> {
+					Intent data = result.data();
+					String todoTitle = data.getStringExtra(getString(R.string.todo_title));
+					int todoOrder = data.getIntExtra(getString(R.string.todo_order), 1);
+					return new TodoActivityResult(todoTitle, todoOrder);
+				});
 	}
 
 	@Override

@@ -23,15 +23,13 @@ public interface TodoListContract {
 
 		void showTodoList(List<TodoModel> todoList);
 
-		Observable<AddTodoResult> showAddTodoActivity();
-
-		void showTodoMarkedComplete();
+		Observable<TodoActivityResult> showAddTodoActivity();
 
 		void showLoadingTodoListError();
 
 		void showSuccessfullySavedMessage();
 
-		void showEditTodoActivity();
+		Observable<TodoActivityResult> showEditTodoActivity(String todoId);
 
 		void addTodoModel(TodoModel todoModel);
 
