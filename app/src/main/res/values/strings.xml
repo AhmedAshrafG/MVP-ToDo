@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Todo List</string>
+    <string name="app_name">Todo-List</string>
     <string name="action_settings">Settings</string>
     <string name="add_todo_dialog_title">Add Todo</string>
     <string name="positive">OK</string>
@@ -8,9 +8,9 @@
     <string name="todo_order">Order</string>
     <string name="offline_mode_error">Connect to the internet for a better experience</string>
     <string name="connection_error">Couldn\'t connect to the internet</string>
-    <string name="title_activity_add_todo">Add Todo</string>
+    <string name="title_activity_add_todo">Add-Todo</string>
     <string name="input_missing_error">Required!</string>
-    <string name="title_activity_edit_todo">Edit Todo</string>
+    <string name="title_activity_edit_todo">Edit-Todo</string>
     <string name="todo_id">todoId</string>
     <string name="success_message">Item saved successfully</string>
     <string name="empty_list_message">No items yet</string>

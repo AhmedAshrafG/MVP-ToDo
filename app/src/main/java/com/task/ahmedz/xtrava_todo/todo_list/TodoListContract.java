@@ -25,15 +25,15 @@ public interface TodoListContract {
 
 		Observable<TodoActivityResult> showAddTodoActivity();
 
-		void showSuccessfullySavedMessage();
-
 		Observable<TodoActivityResult> showEditTodoActivity(String todoId);
 
-		void addTodoModel(TodoModel todoModel);
+		void addTodo(TodoModel todoModel);
 
-		void refreshTodoState(TodoModel newModel);
+		void updateTodo(TodoModel newModel);
 
 		void removeTodo(TodoModel todoModel);
+
+		void showSuccessfullySavedMessage();
 
 		void showConnectionError();
 
@@ -50,6 +50,8 @@ public interface TodoListContract {
 
 		void loadTodoList();
 
+		void refreshTodoList();
+
 		void addTodoClicked();
 
 		void updateTodo(@NonNull TodoModel todoModel);
@@ -61,7 +63,5 @@ public interface TodoListContract {
 		void onTodoStateChanged(TodoModel todoItem);
 
 		void onTodoDeleteClicked(TodoModel todoItem);
-
-		void refreshTodoList();
 	}
 }

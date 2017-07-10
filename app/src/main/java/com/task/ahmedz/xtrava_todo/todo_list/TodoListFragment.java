@@ -1,6 +1,7 @@
 package com.task.ahmedz.xtrava_todo.todo_list;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -32,6 +33,8 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	RecyclerView todoRecyclerView;
 	@BindView(R.id.empty_view)
 	LinearLayout emptyView;
+	@BindView(R.id.fab)
+	FloatingActionButton fab;
 
 	private TodoListContract.Presenter mPresenter;
 	private TodoRecyclerAdapter todoRecyclerAdapter;
@@ -57,6 +60,16 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 		todoRecyclerAdapter = new TodoRecyclerAdapter(this);
 		todoRecyclerView.setLayoutManager(mLinearLayoutManager);
 		todoRecyclerView.setAdapter(todoRecyclerAdapter);
+
+		todoRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+			@Override
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				if (dy > 0)
+					fab.hide();
+				else if (dy < 0)
+					fab.show();
+			}
+		});
 	}
 
 	@OnClick(R.id.fab)
@@ -122,11 +135,6 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
-	public void showSuccessfullySavedMessage() {
-		showSnackBar(R.string.success_message);
-	}
-
-	@Override
 	public Observable<TodoActivityResult> showEditTodoActivity(String todoId) {
 		Intent intent = new Intent(getActivity(), EditTodoActivity.class);
 		intent.putExtra(getString(R.string.todo_id), todoId);
@@ -142,7 +150,7 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
-	public void refreshTodoState(TodoModel todoModel) {
+	public void updateTodo(TodoModel todoModel) {
 		List<TodoModel> todoItems = todoRecyclerAdapter.getTodoItems();
 		todoItems.remove(todoModel);
 		todoItems.add(todoModel);
@@ -159,6 +167,19 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
+	public void addTodo(TodoModel todoModel) {
+		List<TodoModel> todoItems = todoRecyclerAdapter.getTodoItems();
+		todoItems.add(todoModel);
+		Collections.sort(todoItems);
+		todoRecyclerAdapter.setTodoItems(todoItems);
+	}
+
+	@Override
+	public void showSuccessfullySavedMessage() {
+		showSnackBar(R.string.success_message);
+	}
+
+	@Override
 	public void showConnectionError() {
 		showSnackBar(R.string.offline_mode_error);
 	}
@@ -171,14 +192,6 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	@Override
 	public void showDeleteError() {
 		showSnackBar(R.string.connection_error);
-	}
-
-	@Override
-	public void addTodoModel(TodoModel todoModel) {
-		List<TodoModel> todoItems = todoRecyclerAdapter.getTodoItems();
-		todoItems.add(todoModel);
-		Collections.sort(todoItems);
-		todoRecyclerAdapter.setTodoItems(todoItems);
 	}
 
 	@Override

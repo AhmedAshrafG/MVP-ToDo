@@ -14,8 +14,6 @@ public class TodoListActivity extends AppCompatActivity {
 	@BindView(R.id.toolbar)
 	Toolbar toolbar;
 
-	private TodoListContract.Presenter mPresenter;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,6 +21,7 @@ public class TodoListActivity extends AppCompatActivity {
 		ButterKnife.bind(this);
 
 		setSupportActionBar(toolbar);
+		getSupportActionBar().setLogo(R.mipmap.app_icon);
 
 		TodoListFragment todoListFragment = (TodoListFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.todo_list_container);
@@ -36,7 +35,7 @@ public class TodoListActivity extends AppCompatActivity {
 					.commit();
 		}
 
-		mPresenter = new TodoListPresenter(
+		new TodoListPresenter(
 				TodoListRepository.getInstance(),
 				todoListFragment
 		);

@@ -76,12 +76,11 @@ public class TodoModel implements Comparable<TodoModel> {
 	}
 
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
-	@Override
 	public int compareTo(@NonNull TodoModel that) {
-		return that.getOrder() - this.getOrder();
+		int orderDif = that.getOrder() - this.getOrder();
+		if (orderDif != 0)
+			return orderDif;
+		else
+			return that.getId().compareTo(this.getId());
 	}
 }

@@ -110,7 +110,7 @@ class TodoListPresenter implements TodoListContract.Presenter {
 				.doFinally(() -> mView.hideLoadingView())
 				.subscribe(
 						(todoModel) -> {
-							mView.addTodoModel(todoModel);
+							mView.addTodo(todoModel);
 							mView.showSuccessfullySavedMessage();
 						},
 						throwable -> {
@@ -139,7 +139,7 @@ class TodoListPresenter implements TodoListContract.Presenter {
 				.doFinally(() -> mView.hideLoadingView())
 				.subscribe(
 						(todoModel) -> {
-							mView.refreshTodoState(todoModel);
+							mView.updateTodo(todoModel);
 							mView.showSuccessfullySavedMessage();
 						},
 						throwable -> {
@@ -169,12 +169,12 @@ class TodoListPresenter implements TodoListContract.Presenter {
 						.observeOn(AndroidSchedulers.mainThread())
 						.doFinally(() -> mView.hideLoadingView())
 						.subscribe(
-								mView::refreshTodoState,
+								mView::updateTodo,
 								throwable -> {
 									throwable.printStackTrace();
 									mView.showUpdateError();
 									todoModel.toggleCompleted();
-									mView.refreshTodoState(todoModel);
+									mView.updateTodo(todoModel);
 								}
 						)
 		);
@@ -200,7 +200,7 @@ class TodoListPresenter implements TodoListContract.Presenter {
 									throwable.printStackTrace();
 									mView.showDeleteError();
 									todoModel.toggleCompleted();
-									mView.refreshTodoState(todoModel);
+									mView.updateTodo(todoModel);
 								}
 						)
 		);
