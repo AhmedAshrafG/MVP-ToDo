@@ -2,9 +2,8 @@ package com.task.ahmedz.xtrava_todo.data.source;
 
 import android.support.annotation.NonNull;
 
+import com.task.ahmedz.xtrava_todo.data.TodoListData;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
-
-import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -14,7 +13,7 @@ import io.reactivex.Single;
  */
 
 public interface TodoListDataSource {
-	Single<List<TodoModel>> getTodoList();
+	Single<TodoListData> getTodoList();
 
 	Single<TodoModel> updateTodo(@NonNull TodoModel todoModel);
 
@@ -22,5 +21,5 @@ public interface TodoListDataSource {
 
 	Completable deleteTodo(@NonNull String todoId);
 
-	void refreshTodoList();
+	Single<TodoListData> refreshTodoList();
 }

@@ -32,6 +32,12 @@ public interface TodoListContract {
 		void showSuccessfullySavedMessage();
 
 		void showEditTodoActivity();
+
+		void updateTodo();
+
+		void showConnectionError();
+
+		void showUpdateError();
 	}
 
 	interface Presenter extends BasePresenter {
@@ -49,5 +55,7 @@ public interface TodoListContract {
 		void onTodoClicked(TodoModel todoItem);
 
 		void onTodoStateChanged(TodoModel todoItem);
+
+		void refreshTodoList();
 	}
 }

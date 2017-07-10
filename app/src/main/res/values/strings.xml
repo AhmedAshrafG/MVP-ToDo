@@ -7,4 +7,6 @@
     <string name="error_message">An error occured!</string>
     <string name="todo_title">todoTitle</string>
     <string name="todo_order">todoOrder</string>
+    <string name="connection_error">Connect to the internet for a better experience</string>
+    <string name="update_error">Couldn\'t connect to the internet</string>
 </resources>

@@ -90,7 +90,7 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 
 	@Override
 	protected void onRefresh() {
-		mPresenter.loadTodoList();
+		mPresenter.refreshTodoList();
 	}
 
 	@Override
@@ -122,5 +122,20 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	@Override
 	public void showEditTodoActivity() {
 
+	}
+
+	@Override
+	public void updateTodo() {
+
+	}
+
+	@Override
+	public void showConnectionError() {
+		showSnackBar(R.string.connection_error);
+	}
+
+	@Override
+	public void showUpdateError() {
+		showSnackBar(R.string.update_error);
 	}
 }

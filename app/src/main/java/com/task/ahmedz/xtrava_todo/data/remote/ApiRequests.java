@@ -1,14 +1,12 @@
 package com.task.ahmedz.xtrava_todo.data.remote;
 
 import com.google.gson.Gson;
+import com.task.ahmedz.xtrava_todo.data.TodoListData;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -20,22 +18,18 @@ public class ApiRequests {
 
 	private static final long TIMEOUT = 5;
 
-	public static Single<List<TodoModel>> getTodoList() {
+	public static Single<TodoListData> getTodoList() {
 		return ApiClient.getClient()
 				.create(ApiInterface.class)
 				.getTodoList()
-				.timeout(TIMEOUT, TimeUnit.SECONDS)
-				.subscribeOn(Schedulers.newThread())
-				.observeOn(AndroidSchedulers.mainThread());
+				.map(todoModels -> new TodoListData(todoModels, true))
+				.timeout(TIMEOUT, TimeUnit.SECONDS);
 	}
 
 	public static Single<TodoModel> updateTodo(String todoId, TodoModel todoModel) {
 		return ApiClient.getClient()
 				.create(ApiInterface.class)
-				.updateTodo(todoId, getRequestBody(todoModel))
-				.timeout(TIMEOUT, TimeUnit.SECONDS)
-				.subscribeOn(Schedulers.newThread())
-				.observeOn(AndroidSchedulers.mainThread());
+				.updateTodo(todoId, getRequestBody(todoModel));
 	}
 
 	private static RequestBody getRequestBody(Object obj) {

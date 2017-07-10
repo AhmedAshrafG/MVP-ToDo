@@ -2,11 +2,14 @@ package com.task.ahmedz.xtrava_todo.data.repository;
 
 import android.support.annotation.NonNull;
 
+import com.task.ahmedz.xtrava_todo.data.TodoListData;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
+import com.task.ahmedz.xtrava_todo.data.local.TodoDao;
+import com.task.ahmedz.xtrava_todo.data.local.TodoDatabase;
 import com.task.ahmedz.xtrava_todo.data.remote.ApiRequests;
 import com.task.ahmedz.xtrava_todo.data.source.TodoListDataSource;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -18,6 +21,7 @@ import io.reactivex.Single;
 public class TodoListRepository implements TodoListDataSource {
 
 	private static TodoListRepository instance;
+	private TodoDao todoDao;
 
 	public static TodoListRepository getInstance() {
 		if (instance == null)
@@ -26,12 +30,25 @@ public class TodoListRepository implements TodoListDataSource {
 		return instance;
 	}
 
+	private TodoListRepository() {
+		todoDao = TodoDatabase.getInstance()
+				.todoDao();
+	}
+
 
 	@Override
-	public Single<List<TodoModel>> getTodoList() {
+	public Single<TodoListData> getTodoList() {
 		return ApiRequests.getTodoList()
+				.doOnSuccess(todoListData -> {
+					todoDao.deleteAll(todoListData.getTodoModelsAsArray());
+					todoDao.insertAll(todoListData.getTodoModelsAsArray());
+				})
 				.onErrorResumeNext(throwable -> {
-					return ApiRequests.getTodoList();
+					throwable.printStackTrace();
+					return todoDao
+							.getAll()
+							.first(new ArrayList<>())
+							.map(todoModels -> new TodoListData(todoModels, false));
 				});
 	}
 
@@ -51,7 +68,7 @@ public class TodoListRepository implements TodoListDataSource {
 	}
 
 	@Override
-	public void refreshTodoList() {
-
+	public Single<TodoListData> refreshTodoList() {
+		return ApiRequests.getTodoList();
 	}
 }

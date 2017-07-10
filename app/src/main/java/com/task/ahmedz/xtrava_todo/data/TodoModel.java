@@ -1,17 +1,21 @@
 package com.task.ahmedz.xtrava_todo.data;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 /**
  * Created by ahmed on 09-Jul-17.
  */
 
+@Entity(tableName = "todo")
 public class TodoModel implements Comparable<TodoModel> {
-	boolean completed;
-	String title;
-	int order;
-	String url;
-	String id;
+	@PrimaryKey
+	private String id;
+	private boolean completed;
+	private String title;
+	private int order;
+	private String url;
 
 	public boolean isCompleted() {
 		return completed;
