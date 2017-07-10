@@ -1,14 +1,15 @@
-package com.task.ahmedz.xtrava_todo.adapter;
+package com.task.ahmedz.xtrava_todo.todo_list.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.task.ahmedz.xtrava_todo.R;
 import com.task.ahmedz.xtrava_todo.callback.TodoInteractionListener;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
-import com.task.ahmedz.xtrava_todo.todo_list.ui.TodoViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoViewHolder> {
 
 	private List<TodoModel> todoItems;
 	private TodoInteractionListener todoInteractionListener;
+	private int lastPosition = -1;
 
 	public TodoRecyclerAdapter(TodoInteractionListener todoInteractionListener) {
 		this.todoInteractionListener = todoInteractionListener;
@@ -46,6 +48,15 @@ public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoViewHolder> {
 	public void onBindViewHolder(TodoViewHolder holder, int position) {
 		TodoModel todoItem = todoItems.get(position);
 		holder.bindViews(todoItem, todoInteractionListener);
+		setAnimation(holder.itemView, position);
+	}
+
+	private void setAnimation(View viewToAnimate, int position) {
+		if (position > lastPosition) {
+			Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(), android.R.anim.slide_in_left);
+			viewToAnimate.startAnimation(animation);
+			lastPosition = position;
+		}
 	}
 
 	@Override

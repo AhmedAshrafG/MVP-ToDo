@@ -3,14 +3,16 @@ package com.task.ahmedz.xtrava_todo.todo_list;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.task.ahmedz.xtrava_todo.R;
-import com.task.ahmedz.xtrava_todo.adapter.TodoRecyclerAdapter;
 import com.task.ahmedz.xtrava_todo.add_todo.AddTodoActivity;
 import com.task.ahmedz.xtrava_todo.base.RefreshFragment;
 import com.task.ahmedz.xtrava_todo.callback.TodoInteractionListener;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
 import com.task.ahmedz.xtrava_todo.edit_todo.EditTodoActivity;
+import com.task.ahmedz.xtrava_todo.todo_list.ui.TodoRecyclerAdapter;
 import com.task.ahmedz.xtrava_todo.util.RxNavigator;
 
 import java.util.Collections;
@@ -28,6 +30,8 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 
 	@BindView(R.id.todo_recycler)
 	RecyclerView todoRecyclerView;
+	@BindView(R.id.empty_view)
+	LinearLayout emptyView;
 
 	private TodoListContract.Presenter mPresenter;
 	private TodoRecyclerAdapter todoRecyclerAdapter;
@@ -38,8 +42,12 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
+	protected int getLayoutResId() {
+		return R.layout.fragment_todo_list;
+	}
+
+	@Override
 	protected void onLayoutInflated() {
-		super.onLayoutInflated();
 		setupTodoRecycler();
 		mPresenter.subscribe();
 	}
@@ -79,17 +87,13 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
-	protected int getLayoutResId() {
-		return R.layout.fragment_todo_list;
-	}
-
-	@Override
 	public void showLoadingView() {
 		setLoading();
 	}
 
 	@Override
 	public void hideLoadingView() {
+		emptyView.setVisibility(View.GONE);
 		setLoaded();
 	}
 
@@ -100,6 +104,7 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 
 	@Override
 	public void showTodoList(List<TodoModel> todoList) {
+		emptyView.setVisibility(View.GONE);
 		todoRecyclerAdapter.setTodoItems(todoList);
 	}
 
@@ -114,11 +119,6 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 					int todoOrder = data.getIntExtra(getString(R.string.todo_order), 1);
 					return new TodoActivityResult(todoTitle, todoOrder);
 				});
-	}
-
-	@Override
-	public void showLoadingTodoListError() {
-		setLoaded(R.string.error_message);
 	}
 
 	@Override
@@ -184,6 +184,11 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	@Override
 	public void showAddTodoError() {
 		showSnackBar(R.string.error_message);
+	}
+
+	@Override
+	public void showEmptyTodoMessage() {
+		emptyView.setVisibility(View.VISIBLE);
 	}
 
 	@Override

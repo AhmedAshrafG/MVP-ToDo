@@ -25,8 +25,6 @@ public interface TodoListContract {
 
 		Observable<TodoActivityResult> showAddTodoActivity();
 
-		void showLoadingTodoListError();
-
 		void showSuccessfullySavedMessage();
 
 		Observable<TodoActivityResult> showEditTodoActivity(String todoId);
@@ -44,6 +42,8 @@ public interface TodoListContract {
 		void showDeleteError();
 
 		void showAddTodoError();
+
+		void showEmptyTodoMessage();
 	}
 
 	interface Presenter extends BasePresenter {

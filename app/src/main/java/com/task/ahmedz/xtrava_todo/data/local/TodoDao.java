@@ -34,5 +34,8 @@ public interface TodoDao {
 	void insertAll(TodoModel...todoModels);
 
 	@Delete
+	void delete(TodoModel todoModel);
+
+	@Delete
 	void deleteAll(TodoModel...todoModels);
 }

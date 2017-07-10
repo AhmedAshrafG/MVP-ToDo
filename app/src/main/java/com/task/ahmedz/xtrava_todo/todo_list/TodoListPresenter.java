@@ -60,11 +60,13 @@ class TodoListPresenter implements TodoListContract.Presenter {
 						.doOnSubscribe(disposable -> mView.showLoadingView())
 						.doFinally(() -> mView.hideLoadingView())
 						.subscribe(
-								mView::showTodoList,
-								throwable -> {
-									throwable.printStackTrace();
-									mView.showLoadingTodoListError();
-								}
+								(todoList) -> {
+									if (todoList.isEmpty())
+										mView.showEmptyTodoMessage();
+									else
+										mView.showTodoList(todoList);
+								},
+								Throwable::printStackTrace
 						)
 		);
 	}
@@ -79,7 +81,12 @@ class TodoListPresenter implements TodoListContract.Presenter {
 						.observeOn(AndroidSchedulers.mainThread())
 						.doFinally(() -> mView.hideLoadingView())
 						.subscribe(
-								mView::showTodoList,
+								(todoList) -> {
+									if (todoList.isEmpty())
+										mView.showEmptyTodoMessage();
+									else
+										mView.showTodoList(todoList);
+								},
 								throwable -> {
 									throwable.printStackTrace();
 									mView.showConnectionError();

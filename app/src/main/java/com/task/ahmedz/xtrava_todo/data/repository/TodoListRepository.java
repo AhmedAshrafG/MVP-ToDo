@@ -56,7 +56,10 @@ public class TodoListRepository implements TodoListDataSource {
 	@Override
 	public Single<TodoModel> addTodo(@NonNull TodoModel todoModel) {
 		return ApiRequests.addTodo(todoModel)
-				.doOnSuccess(backendModel -> todoDao.insert(backendModel));
+				.doOnSuccess(backendModel -> {
+					todoDao.delete(backendModel);
+					todoDao.insert(backendModel);
+				});
 	}
 
 	@Override
@@ -66,7 +69,12 @@ public class TodoListRepository implements TodoListDataSource {
 
 	@Override
 	public Single<TodoListData> refreshTodoList() {
-		return ApiRequests.getTodoList();
+		return ApiRequests.getTodoList()
+				.doOnSuccess(todoListData -> {
+					TodoModel[] todoModels = todoListData.getTodoModelsAsArray();
+					todoDao.deleteAll(todoModels);
+					todoDao.insertAll(todoModels);
+				});
 	}
 
 	@Override
