@@ -1,5 +1,6 @@
 package com.task.ahmedz.xtrava_todo.util;
 
+import android.app.Application;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
@@ -14,6 +15,10 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class RxNavigator {
+
+	public static void register(Application application) {
+		RxActivityResult.register(application);
+	}
 
 	public static <T extends Fragment> Observable<Result<T>> navigateAndWait(T fragment, Intent intent) {
 		return RxActivityResult.on(fragment)
