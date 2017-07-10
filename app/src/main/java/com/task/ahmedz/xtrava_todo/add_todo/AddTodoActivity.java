@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.EditText;
 
-import com.task.ahmedz.xtrava_todo.BuildConfig;
 import com.task.ahmedz.xtrava_todo.R;
 
 import butterknife.BindView;
@@ -30,12 +29,6 @@ public class AddTodoActivity extends AppCompatActivity {
 		ButterKnife.bind(this);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		if (BuildConfig.DEBUG) {
-			titleTextView.setText("LOL");
-			orderTextView.setText("2");
-			onFabClicked();
-		}
 	}
 
 	@OnClick(R.id.fab)

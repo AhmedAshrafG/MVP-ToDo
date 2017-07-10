@@ -199,7 +199,6 @@ class TodoListPresenter implements TodoListContract.Presenter {
 								throwable -> {
 									throwable.printStackTrace();
 									mView.showDeleteError();
-									todoModel.toggleCompleted();
 									mView.updateTodo(todoModel);
 								}
 						)
