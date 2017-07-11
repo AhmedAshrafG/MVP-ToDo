@@ -77,10 +77,17 @@ public class TodoModel implements Comparable<TodoModel> {
 
 	@Override
 	public int compareTo(@NonNull TodoModel that) {
-		int orderDif = that.getOrder() - this.getOrder();
-		if (orderDif != 0)
-			return orderDif;
-		else
-			return that.getId().compareTo(this.getId());
+		boolean firstCompleted = this.isCompleted();
+		boolean secondCompleted = that.isCompleted();
+
+		if (firstCompleted == secondCompleted) {
+			int orderDif = that.getOrder() - this.getOrder();
+			if (orderDif != 0)
+				return orderDif;
+			else
+				return that.getId().compareTo(this.getId());
+		} else {
+			return firstCompleted? 1: -1;
+		}
 	}
 }
