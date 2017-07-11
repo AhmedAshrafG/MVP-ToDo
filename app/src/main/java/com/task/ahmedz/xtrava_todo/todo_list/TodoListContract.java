@@ -33,6 +33,8 @@ public interface TodoListContract {
 
 		void removeTodo(TodoModel todoModel);
 
+		void showDeleteConfirmationDialog(TodoModel todoModel);
+
 		void showSuccessfullySavedMessage();
 
 		void showConnectionError();
@@ -56,7 +58,7 @@ public interface TodoListContract {
 
 		void updateTodo(@NonNull TodoModel todoModel);
 
-		void deleteTodo(@NonNull TodoModel todoModel);
+		void onDeleteConfirmed(@NonNull TodoModel todoModel);
 
 		void onTodoClicked(TodoModel todoItem);
 

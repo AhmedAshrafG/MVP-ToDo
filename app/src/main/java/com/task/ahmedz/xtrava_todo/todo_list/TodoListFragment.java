@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.task.ahmedz.xtrava_todo.R;
 import com.task.ahmedz.xtrava_todo.add_todo.AddTodoActivity;
 import com.task.ahmedz.xtrava_todo.base.RefreshFragment;
@@ -167,6 +168,17 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 	}
 
 	@Override
+	public void showDeleteConfirmationDialog(TodoModel todoModel) {
+		new MaterialDialog.Builder(getActivity())
+				.title(R.string.delete_dialog_title)
+				.content(R.string.delete_dialog_content)
+				.positiveText(R.string.positive)
+				.onPositive((dialog, which) -> mPresenter.onDeleteConfirmed(todoModel))
+				.negativeText(R.string.negative)
+				.show();
+	}
+
+	@Override
 	public void addTodo(TodoModel todoModel) {
 		List<TodoModel> todoItems = todoRecyclerAdapter.getTodoItems();
 		todoItems.add(todoModel);
@@ -196,7 +208,7 @@ public class TodoListFragment extends RefreshFragment implements TodoListContrac
 
 	@Override
 	public void showAddTodoError() {
-		showSnackBar(R.string.error_message);
+		showSnackBar(R.string.connection_error);
 	}
 
 	@Override

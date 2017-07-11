@@ -158,7 +158,7 @@ class TodoListPresenter implements TodoListContract.Presenter {
 
 	@Override
 	public void onTodoDeleteClicked(TodoModel todoModel) {
-		deleteTodo(todoModel);
+		mView.showDeleteConfirmationDialog(todoModel);
 	}
 
 	@Override
@@ -181,7 +181,7 @@ class TodoListPresenter implements TodoListContract.Presenter {
 	}
 
 	@Override
-	public void deleteTodo(@NonNull TodoModel todoModel) {
+	public void onDeleteConfirmed(@NonNull TodoModel todoModel) {
 		mSubscriptions.add(
 				mRepository.deleteTodo(todoModel)
 						.map(responseBody -> new DeleteRequestResponseParser(responseBody))
