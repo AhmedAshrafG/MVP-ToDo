@@ -1,6 +1,6 @@
 # Todo List Demo
 
-A deliverable for an interview phase in [Xtrava](xtrava.co).
+A deliverable for an interview phase in [Xtrava](http://www.xtrava.co).
 
 ## Screenshots
 
