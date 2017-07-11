@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.task.ahmedz.xtrava_todo.R;
@@ -73,5 +74,15 @@ public class EditTodoActivity extends AppCompatActivity {
 		intent.putExtra(getString(R.string.todo_order), Integer.valueOf(order));
 		setResult(RESULT_OK, intent);
 		finish();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				finish();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }
