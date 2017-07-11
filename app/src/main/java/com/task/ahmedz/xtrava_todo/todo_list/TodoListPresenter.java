@@ -183,7 +183,7 @@ class TodoListPresenter implements TodoListContract.Presenter {
 	@Override
 	public void deleteTodo(@NonNull TodoModel todoModel) {
 		mSubscriptions.add(
-				mRepository.deleteTodo(todoModel.getId())
+				mRepository.deleteTodo(todoModel)
 						.map(responseBody -> new DeleteRequestResponseParser(responseBody))
 						.flatMapCompletable(responseParser -> {
 							if (responseParser.isSuccess())

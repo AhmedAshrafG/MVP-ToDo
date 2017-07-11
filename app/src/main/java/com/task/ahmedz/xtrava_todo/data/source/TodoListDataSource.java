@@ -19,7 +19,7 @@ public interface TodoListDataSource {
 
 	Single<TodoModel> addTodo(@NonNull TodoModel todoModel);
 
-	Single<ResponseBody> deleteTodo(@NonNull String todoId);
+	Single<ResponseBody> deleteTodo(@NonNull TodoModel todoModel);
 
 	Single<TodoListData> refreshTodoList();
 }

@@ -63,8 +63,9 @@ public class TodoListRepository implements TodoListDataSource {
 	}
 
 	@Override
-	public Single<ResponseBody> deleteTodo(@NonNull String todoId) {
-		return ApiRequests.deleteTodo(todoId);
+	public Single<ResponseBody> deleteTodo(@NonNull TodoModel todoModel) {
+		return ApiRequests.deleteTodo(todoModel.getId())
+				.doOnSuccess(responseBody -> todoDao.delete(todoModel));
 	}
 
 	@Override
