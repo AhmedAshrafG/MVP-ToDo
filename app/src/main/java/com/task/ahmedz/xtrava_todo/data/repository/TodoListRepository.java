@@ -35,7 +35,6 @@ public class TodoListRepository implements TodoListDataSource {
 				.todoDao();
 	}
 
-
 	@Override
 	public Single<TodoListData> getTodoList() {
 		return ApiRequests.getTodoList()
