@@ -39,6 +39,7 @@ public class AddTodoActivity extends AppCompatActivity {
 
 		if (TextUtils.isEmpty(title)) {
 			titleTextView.setError(getString(R.string.input_missing_error));
+			return;
 		}
 		if (TextUtils.isEmpty(order)) {
 			orderTextView.setError(getString(R.string.input_missing_error));

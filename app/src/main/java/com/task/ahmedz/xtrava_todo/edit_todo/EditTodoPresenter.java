@@ -42,6 +42,7 @@ public class EditTodoPresenter implements EditTodoContract.Presenter {
 	public void onSubmitClicked(String title, String order) {
 		if (TextUtils.isEmpty(title)) {
 			mView.showTitleError();
+			return;
 		}
 		if (TextUtils.isEmpty(order)) {
 			mView.showOrderError();
