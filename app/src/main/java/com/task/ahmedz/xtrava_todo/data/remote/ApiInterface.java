@@ -30,4 +30,7 @@ public interface ApiInterface {
 
 	@DELETE("{todoId}")
 	Single<ResponseBody> deleteTodo(@Path("todoId") String todoId);
+
+	@GET("{todoId}")
+	Single<TodoModel> getTodo(@Path("todoId") String todoId);
 }

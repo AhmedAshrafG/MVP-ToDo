@@ -18,6 +18,7 @@ import okhttp3.ResponseBody;
 public class ApiRequests {
 
 	private static final long TIMEOUT = 5;
+	private static final long SHORT_TIMEOUT = 2;
 
 	public static Single<TodoListData> getTodoList() {
 		return ApiClient.getClient()
@@ -25,6 +26,13 @@ public class ApiRequests {
 				.getTodoList()
 				.map(todoModels -> new TodoListData(todoModels, true))
 				.timeout(TIMEOUT, TimeUnit.SECONDS);
+	}
+
+	public static Single<TodoModel> getTodoItem(String todoId) {
+		return ApiClient.getClient()
+				.create(ApiInterface.class)
+				.getTodo(todoId)
+				.timeout(SHORT_TIMEOUT, TimeUnit.SECONDS);
 	}
 
 	public static Single<TodoModel> updateTodo(String todoId, TodoModel todoModel) {
