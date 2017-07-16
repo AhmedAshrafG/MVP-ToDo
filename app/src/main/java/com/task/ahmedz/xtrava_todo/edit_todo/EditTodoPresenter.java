@@ -2,7 +2,7 @@ package com.task.ahmedz.xtrava_todo.edit_todo;
 
 import android.text.TextUtils;
 
-import com.task.ahmedz.xtrava_todo.edit_todo.repository.EditTodoRepository;
+import com.task.ahmedz.xtrava_todo.data.source.EditTodoDataSource;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -16,10 +16,10 @@ public class EditTodoPresenter implements EditTodoContract.Presenter {
 
 	private EditTodoContract.View mView;
 	private String todoId;
-	private final EditTodoRepository mRepository;
+	private final EditTodoDataSource mRepository;
 	private CompositeDisposable mSubscriptions;
 
-	public EditTodoPresenter(EditTodoContract.View mView, EditTodoRepository mRepository, String todoId) {
+	public EditTodoPresenter(EditTodoContract.View mView, EditTodoDataSource mRepository, String todoId) {
 		this.mView = mView;
 		this.todoId = todoId;
 		this.mRepository = mRepository;

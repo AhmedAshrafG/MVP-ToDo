@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.task.ahmedz.xtrava_todo.data.TodoListData;
 import com.task.ahmedz.xtrava_todo.data.TodoModel;
-import com.task.ahmedz.xtrava_todo.data.repository.TodoListRepository;
+import com.task.ahmedz.xtrava_todo.data.source.TodoListDataSource;
 import com.task.ahmedz.xtrava_todo.util.DeleteRequestResponseParser;
 import com.task.ahmedz.xtrava_todo.util.Utils;
 
@@ -22,10 +22,10 @@ import io.reactivex.schedulers.Schedulers;
 class TodoListPresenter implements TodoListContract.Presenter {
 
 	private final TodoListContract.View mView;
-	private final TodoListRepository mRepository;
+	private final TodoListDataSource mRepository;
 	private final CompositeDisposable mSubscriptions;
 
-	public TodoListPresenter(TodoListRepository mRepository, TodoListContract.View mView) {
+	public TodoListPresenter(TodoListDataSource mRepository, TodoListContract.View mView) {
 		if (mView == null)
 			throw new IllegalArgumentException("View can't be null!");
 

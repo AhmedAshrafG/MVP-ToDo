@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.task.ahmedz.xtrava_todo.R;
-import com.task.ahmedz.xtrava_todo.edit_todo.repository.EditTodoRepository;
+import com.task.ahmedz.xtrava_todo.data.repository.EditTodoRepository;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
