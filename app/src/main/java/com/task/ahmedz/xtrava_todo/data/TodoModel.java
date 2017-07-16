@@ -1,6 +1,7 @@
 package com.task.ahmedz.xtrava_todo.data;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -20,6 +21,11 @@ public class TodoModel implements Comparable<TodoModel> {
 	public TodoModel(String title, int order) {
 		this.title = title;
 		this.order = order;
+	}
+
+	@Ignore
+	public TodoModel() {
+		this("", 0);
 	}
 
 	public boolean isCompleted() {
