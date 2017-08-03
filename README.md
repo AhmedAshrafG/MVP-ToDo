@@ -1,7 +1,3 @@
-# Todo List Demo
-
-A deliverable for an interview phase in [Xtrava](http://www.xtrava.co).
-
 ## Screenshots
 
 <img src="https://raw.githubusercontent.com/AhMeDz333/Xtrava-ToDo/master/screenshots/todo_list_1.png" width="15%"></img> 
